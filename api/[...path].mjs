@@ -118,6 +118,14 @@ function blobUnavailable() {
   return !process.env.BLOB_READ_WRITE_TOKEN;
 }
 
+function isNotFound(caught) {
+  return /not.?found/i.test([
+    caught?.name,
+    caught?.code,
+    caught?.message
+  ].filter(Boolean).join(" "));
+}
+
 async function readDatabase() {
   if (blobUnavailable()) throw new ApiError(503, "Shared storage is not connected to this deployment yet.");
   try {
@@ -134,7 +142,7 @@ async function readDatabase() {
       etag: metadata.etag
     };
   } catch (caught) {
-    if (caught?.name === "BlobNotFoundError" || caught?.code === "BlobNotFound") {
+    if (isNotFound(caught)) {
       return { database: emptyDatabase(), etag: null };
     }
     throw caught;
