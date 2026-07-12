@@ -119,7 +119,7 @@ function blobUnavailable() {
 }
 
 function isNotFound(caught) {
-  return /not.?found/i.test([
+  return /(not.?found|does not exist|requested blob)/i.test([
     caught?.name,
     caught?.code,
     caught?.message
