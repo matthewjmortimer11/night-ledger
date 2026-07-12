@@ -1,0 +1,228 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#14191a">
+  <meta name="description" content="Plan a night out, track the rounds, settle the spend, complete pub bingo, and replay the memories.">
+  <title>Night Ledger</title>
+  <link rel="icon" href="assets/app-icon-192.png" type="image/png">
+  <link rel="apple-touch-icon" href="assets/app-icon-192.png">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="stylesheet" href="styles.css">
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#view-root">Skip to content</a>
+
+  <svg class="svg-sprite" aria-hidden="true">
+    <symbol id="icon-replay" viewBox="0 0 24 24">
+      <path d="M3 12a9 9 0 1 0 3-6.7L3 8"></path>
+      <path d="M3 3v5h5"></path>
+      <path d="M12 7v5l3 2"></path>
+    </symbol>
+    <symbol id="icon-trophy" viewBox="0 0 24 24">
+      <path d="M8 21h8"></path>
+      <path d="M12 17v4"></path>
+      <path d="M7 4h10v4a5 5 0 0 1-10 0V4Z"></path>
+      <path d="M7 6H4v2a4 4 0 0 0 4 4"></path>
+      <path d="M17 6h3v2a4 4 0 0 1-4 4"></path>
+    </symbol>
+    <symbol id="icon-drink" viewBox="0 0 24 24">
+      <path d="M5 3h14l-2 18H7L5 3Z"></path>
+      <path d="M6 8h12"></path>
+      <path d="M9 12h6"></path>
+    </symbol>
+    <symbol id="icon-grid" viewBox="0 0 24 24">
+      <rect x="3" y="3" width="7" height="7" rx="1"></rect>
+      <rect x="14" y="3" width="7" height="7" rx="1"></rect>
+      <rect x="3" y="14" width="7" height="7" rx="1"></rect>
+      <rect x="14" y="14" width="7" height="7" rx="1"></rect>
+    </symbol>
+    <symbol id="icon-route" viewBox="0 0 24 24">
+      <circle cx="6" cy="19" r="3"></circle>
+      <circle cx="18" cy="5" r="3"></circle>
+      <path d="M6 16V8a3 3 0 0 1 3-3h6"></path>
+      <path d="m11 15 3 3-3 3"></path>
+    </symbol>
+    <symbol id="icon-plus" viewBox="0 0 24 24">
+      <path d="M12 5v14M5 12h14"></path>
+    </symbol>
+    <symbol id="icon-settings" viewBox="0 0 24 24">
+      <circle cx="12" cy="12" r="3"></circle>
+      <path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1-2.8 2.8-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.6v.2h-4V21a1.7 1.7 0 0 0-1-1.6 1.7 1.7 0 0 0-1.9.3l-.1.1L4.2 17l.1-.1a1.7 1.7 0 0 0 .3-1.9A1.7 1.7 0 0 0 3 14H2.8v-4H3a1.7 1.7 0 0 0 1.6-1 1.7 1.7 0 0 0-.3-1.9L4.2 7 7 4.2l.1.1a1.7 1.7 0 0 0 1.9.3A1.7 1.7 0 0 0 10 3V2.8h4V3a1.7 1.7 0 0 0 1 1.6 1.7 1.7 0 0 0 1.9-.3l.1-.1L19.8 7l-.1.1a1.7 1.7 0 0 0-.3 1.9 1.7 1.7 0 0 0 1.6 1h.2v4H21a1.7 1.7 0 0 0-1.6 1Z"></path>
+    </symbol>
+    <symbol id="icon-camera" viewBox="0 0 24 24">
+      <path d="M14.5 5 13 3h-2L9.5 5H5a2 2 0 0 0-2 2v11a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-4.5Z"></path>
+      <circle cx="12" cy="12.5" r="4"></circle>
+    </symbol>
+    <symbol id="icon-wallet" viewBox="0 0 24 24">
+      <path d="M4 6h14a2 2 0 0 1 2 2v11H4a2 2 0 0 1-2-2V6a3 3 0 0 1 3-3h12"></path>
+      <path d="M16 11h6v5h-6a2.5 2.5 0 0 1 0-5Z"></path>
+    </symbol>
+    <symbol id="icon-users" viewBox="0 0 24 24">
+      <circle cx="9" cy="8" r="4"></circle>
+      <path d="M2 21v-2a6 6 0 0 1 6-6h2a6 6 0 0 1 6 6v2"></path>
+      <path d="M16 4.2a4 4 0 0 1 0 7.6M18 14a6 6 0 0 1 4 5.7V21"></path>
+    </symbol>
+    <symbol id="icon-calendar" viewBox="0 0 24 24">
+      <rect x="3" y="5" width="18" height="16" rx="2"></rect>
+      <path d="M16 3v4M8 3v4M3 10h18"></path>
+    </symbol>
+    <symbol id="icon-clock" viewBox="0 0 24 24">
+      <circle cx="12" cy="12" r="9"></circle>
+      <path d="M12 7v5l3 2"></path>
+    </symbol>
+    <symbol id="icon-pin" viewBox="0 0 24 24">
+      <path d="M20 10c0 5-8 11-8 11S4 15 4 10a8 8 0 1 1 16 0Z"></path>
+      <circle cx="12" cy="10" r="2.5"></circle>
+    </symbol>
+    <symbol id="icon-check" viewBox="0 0 24 24">
+      <path d="m5 12 4 4L19 6"></path>
+    </symbol>
+    <symbol id="icon-edit" viewBox="0 0 24 24">
+      <path d="M12 20h9"></path>
+      <path d="m16.5 3.5 4 4L8 20H4v-4L16.5 3.5Z"></path>
+    </symbol>
+    <symbol id="icon-trash" viewBox="0 0 24 24">
+      <path d="M4 7h16M10 11v6M14 11v6M6 7l1 14h10l1-14M9 7V4h6v3"></path>
+    </symbol>
+    <symbol id="icon-more" viewBox="0 0 24 24">
+      <circle cx="5" cy="12" r="1"></circle>
+      <circle cx="12" cy="12" r="1"></circle>
+      <circle cx="19" cy="12" r="1"></circle>
+    </symbol>
+    <symbol id="icon-chevron-up" viewBox="0 0 24 24">
+      <path d="m6 15 6-6 6 6"></path>
+    </symbol>
+    <symbol id="icon-chevron-down" viewBox="0 0 24 24">
+      <path d="m6 9 6 6 6-6"></path>
+    </symbol>
+    <symbol id="icon-close" viewBox="0 0 24 24">
+      <path d="M6 6l12 12M18 6 6 18"></path>
+    </symbol>
+    <symbol id="icon-download" viewBox="0 0 24 24">
+      <path d="M12 3v12m0 0 5-5m-5 5-5-5M4 21h16"></path>
+    </symbol>
+    <symbol id="icon-upload" viewBox="0 0 24 24">
+      <path d="M12 16V4m0 0 5 5m-5-5L7 9M4 20h16"></path>
+    </symbol>
+    <symbol id="icon-spark" viewBox="0 0 24 24">
+      <path d="m12 3 1.4 4.6L18 9l-4.6 1.4L12 15l-1.4-4.6L6 9l4.6-1.4L12 3Z"></path>
+      <path d="m19 15 .8 2.2L22 18l-2.2.8L19 21l-.8-2.2L16 18l2.2-.8L19 15Z"></path>
+    </symbol>
+    <symbol id="icon-image" viewBox="0 0 24 24">
+      <rect x="3" y="3" width="18" height="18" rx="2"></rect>
+      <circle cx="8.5" cy="8.5" r="1.5"></circle>
+      <path d="m21 15-5-5L5 21"></path>
+    </symbol>
+    <symbol id="icon-water" viewBox="0 0 24 24">
+      <path d="M12 2s7 7 7 13a7 7 0 0 1-14 0c0-6 7-13 7-13Z"></path>
+    </symbol>
+  </svg>
+
+  <header class="hero" id="app-header">
+    <div class="hero-shade"></div>
+    <div class="hero-inner">
+      <div class="topbar">
+        <a href="#" class="brand" data-action="go-home" aria-label="Night Ledger home">
+          <span class="brand-mark">NL</span>
+          <span>Night Ledger</span>
+        </a>
+
+        <div class="topbar-actions">
+          <div class="night-switcher">
+            <label class="sr-only" for="night-select">Choose night</label>
+            <select id="night-select" aria-label="Choose night"></select>
+            <button class="icon-button icon-button-light" type="button" data-action="new-night" title="Create a new night" aria-label="Create a new night">
+              <svg><use href="#icon-plus"></use></svg>
+            </button>
+            <button class="icon-button icon-button-light" type="button" data-action="open-settings" title="Settings and backups" aria-label="Settings and backups">
+              <svg><use href="#icon-settings"></use></svg>
+            </button>
+          </div>
+          <button class="account-button" id="account-button" type="button" data-action="open-account">
+            <svg><use href="#icon-users"></use></svg>
+            <span id="account-label">Sign in</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="hero-copy">
+        <div>
+          <div class="hero-status-row">
+            <span class="status-pill" id="night-status"></span>
+            <span id="night-date"></span>
+          </div>
+          <h1 id="night-title">Night Ledger</h1>
+          <p class="hero-location" id="night-location"></p>
+        </div>
+        <div class="hero-actions">
+          <button class="button button-light" type="button" data-action="add-memory">
+            <svg><use href="#icon-camera"></use></svg>
+            Add memory
+          </button>
+          <button class="button button-accent" type="button" data-action="add-drink">
+            <svg><use href="#icon-plus"></use></svg>
+            Add drink
+          </button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <nav class="tabbar" aria-label="Main sections">
+    <div class="tabbar-inner">
+      <button class="nav-tab active" type="button" data-view="replay">
+        <svg><use href="#icon-replay"></use></svg>
+        <span>Replay</span>
+      </button>
+      <button class="nav-tab" type="button" data-view="scores">
+        <svg><use href="#icon-trophy"></use></svg>
+        <span>Split the G</span>
+      </button>
+      <button class="nav-tab" type="button" data-view="drinks">
+        <svg><use href="#icon-drink"></use></svg>
+        <span>Drinks</span>
+      </button>
+      <button class="nav-tab" type="button" data-view="bingo">
+        <svg><use href="#icon-grid"></use></svg>
+        <span>Bingo</span>
+      </button>
+      <button class="nav-tab" type="button" data-view="plan">
+        <svg><use href="#icon-route"></use></svg>
+        <span>Plan</span>
+      </button>
+    </div>
+  </nav>
+
+  <main id="view-root" class="view-root" tabindex="-1" aria-live="polite"></main>
+
+  <button class="mobile-fab" id="mobile-fab" type="button" data-action="context-add" aria-label="Add item">
+    <svg><use href="#icon-plus"></use></svg>
+  </button>
+
+  <dialog class="app-dialog" id="app-dialog">
+    <form method="dialog" class="dialog-shell" id="dialog-shell">
+      <header class="dialog-header">
+        <div>
+          <p class="eyebrow" id="dialog-eyebrow"></p>
+          <h2 id="dialog-title"></h2>
+        </div>
+        <button class="icon-button" value="cancel" aria-label="Close dialog" title="Close">
+          <svg><use href="#icon-close"></use></svg>
+        </button>
+      </header>
+      <div class="dialog-body" id="dialog-body"></div>
+      <footer class="dialog-footer" id="dialog-footer"></footer>
+    </form>
+  </dialog>
+
+  <input id="import-file" class="sr-only" type="file" accept="application/json">
+  <div class="toast-region" id="toast-region" role="status" aria-live="polite"></div>
+
+  <noscript>
+    <div class="noscript">Night Ledger needs JavaScript enabled to save and replay your night.</div>
+  </noscript>
+</body>
+</html>

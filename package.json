@@ -1,0 +1,16 @@
+{
+  "name": "night-ledger",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Shared night-out planning, scoring, and replay app.",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "dev": "node server.js",
+    "check": "node --check app.js && node --check server.js && node --check sw.js && node --check api/[...path].mjs"
+  },
+  "dependencies": {
+    "@vercel/blob": "^2.0.0"
+  }
+}
