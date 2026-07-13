@@ -1388,7 +1388,8 @@
         const image = new Image();
         image.onerror = () => reject(new Error("That image could not be opened."));
         image.onload = () => {
-          const limit = 1280;
+          // Keep proof photos pleasantly clear while leaving room for a busy shared ledger.
+          const limit = 960;
           const scale = Math.min(1, limit / Math.max(image.width, image.height));
           const width = Math.max(1, Math.round(image.width * scale));
           const height = Math.max(1, Math.round(image.height * scale));
@@ -1397,7 +1398,7 @@
           canvas.height = height;
           const context = canvas.getContext("2d");
           context.drawImage(image, 0, 0, width, height);
-          resolve(canvas.toDataURL("image/jpeg", 0.82));
+          resolve(canvas.toDataURL("image/jpeg", 0.72));
         };
         image.src = String(reader.result);
       };

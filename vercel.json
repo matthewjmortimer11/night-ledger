@@ -1,4 +1,10 @@
 {
+  "rewrites": [
+    {
+      "source": "/api/:path*",
+      "destination": "/api/[...path]?path=:path*"
+    }
+  ],
   "functions": {
     "api/[...path].mjs": {
       "maxDuration": 10
