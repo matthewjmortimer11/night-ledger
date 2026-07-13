@@ -2,6 +2,13 @@
 
 Night Ledger is a shared night-out planner, drink ledger, pub bingo board, Guinness split scorecard, and replay timeline.
 
+## Event setup
+
+1. Open the live app and create an account.
+2. Create a group; it starts with a clean night and adds the host as its first guest.
+3. Share the seven-character invite code from Account and groups. Joining members are added to the active night automatically.
+4. Set the night name, date, budget, route, guests, and bingo board before heading out.
+
 ## Local use
 
 ~~~bash

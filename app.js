@@ -234,6 +234,21 @@
     };
   }
 
+  function createStarterState() {
+    const firstNight = createBlankNight({
+      title: "Your night out",
+      date: localDate(),
+      location: "",
+      budget: 50,
+      participants: []
+    });
+    return {
+      version: STATE_VERSION,
+      activeNightId: firstNight.id,
+      nights: [firstNight]
+    };
+  }
+
   function normaliseNight(night) {
     const blank = createBlankNight({});
     return {
@@ -257,7 +272,7 @@
 
   function normaliseState(candidate) {
     if (!candidate || !Array.isArray(candidate.nights) || candidate.nights.length === 0) {
-      return createSeedState();
+      return createStarterState();
     }
     const nights = candidate.nights.map(normaliseNight);
     const activeNightId = nights.some((night) => night.id === candidate.activeNightId)
@@ -269,10 +284,10 @@
   function loadState() {
     try {
       const saved = localStorage.getItem(STORAGE_KEY);
-      return saved ? normaliseState(JSON.parse(saved)) : createSeedState();
+      return saved ? normaliseState(JSON.parse(saved)) : createStarterState();
     } catch (error) {
       console.warn("Night Ledger could not load saved data.", error);
-      return createSeedState();
+      return createStarterState();
     }
   }
 
@@ -357,6 +372,20 @@
     saveState();
     render();
     if (!silent) toast("Now working in " + group.name + ".");
+  }
+
+  function addCurrentUserToActiveNight() {
+    const night = getNight();
+    const displayName = account.user?.displayName || "";
+    if (!night || !displayName) return false;
+    const alreadyAdded = night.participants.some((person) => person.name.trim().toLocaleLowerCase() === displayName.trim().toLocaleLowerCase());
+    if (alreadyAdded) return false;
+    night.participants.push({
+      id: uid("person"),
+      name: displayName,
+      color: PERSON_COLORS[night.participants.length % PERSON_COLORS.length]
+    });
+    return true;
   }
 
   function getNight() {
@@ -1988,15 +2017,27 @@
       body: `
         <div class="form-grid">
           <div class="form-field form-field-full"><label for="group-name">Group name</label><input id="group-name" name="name" maxlength="80" placeholder="e.g. The Friday lot" required></div>
-          <div class="form-field form-field-full"><div class="callout">This makes the current Night Ledger the starting shared ledger for the group.</div></div>
+          <div class="form-field form-field-full"><label class="check-row"><input type="checkbox" name="freshLedger" checked> Start with a fresh shared night</label></div>
         </div>
       `,
       submitLabel: "Create group",
       onSubmit: async (form) => {
         try {
+          const name = value(form, "name");
+          let startingLedger = state;
+          if (form.elements.namedItem("freshLedger")?.checked) {
+            const firstNight = createBlankNight({
+              title: name + " night out",
+              date: localDate(),
+              location: "",
+              budget: 50,
+              participants: account.user ? [{ name: account.user.displayName, color: PERSON_COLORS[0] }] : []
+            });
+            startingLedger = { version: STATE_VERSION, activeNightId: firstNight.id, nights: [firstNight] };
+          }
           const payload = await api("/api/groups", {
             method: "POST",
-            body: JSON.stringify({ name: value(form, "name"), ledger: state })
+            body: JSON.stringify({ name, ledger: startingLedger })
           });
           account.groups.push(payload.group);
           await setActiveGroup(payload.group.id, payload.ledger, true);
@@ -2028,6 +2069,7 @@
           });
           if (!account.groups.some((group) => group.id === payload.group.id)) account.groups.push(payload.group);
           await setActiveGroup(payload.group.id, payload.ledger, true);
+          if (addCurrentUserToActiveNight()) commit("Added you to the guest list.");
           toast("Joined " + payload.group.name + ".");
           return true;
         } catch (error) {
