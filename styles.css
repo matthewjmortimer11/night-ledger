@@ -242,8 +242,8 @@ svg {
   place-items: center;
   border: 1px solid rgba(255, 255, 255, 0.48);
   border-radius: 6px;
-  color: #111;
-  background: var(--amber);
+  color: #fff;
+  background: var(--teal);
   font-size: 12px;
   font-weight: 900;
 }
@@ -2820,3 +2820,6 @@ svg {
     box-shadow: none;
   }
 }
+
+
+.brand-mark img { display: block; width: 100%; height: 100%; border-radius: inherit; }
