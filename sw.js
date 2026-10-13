@@ -1,4 +1,4 @@
-const CACHE_NAME = "night-ledger-v3";
+const CACHE_NAME = "night-ledger-v4-logos";
 const APP_SHELL = [
   "./",
   "./index.html",
@@ -7,7 +7,11 @@ const APP_SHELL = [
   "./manifest.webmanifest",
   "./assets/night-board.png",
   "./assets/app-icon-192.png",
-  "./assets/app-icon-512.png"
+  "./assets/app-icon-512.png",
+  "./assets/app-icon.svg",
+  "./assets/apple-touch-icon.png",
+  "./assets/app-icon-maskable-512.png",
+  "./assets/favicon.ico"
 ];
 
 self.addEventListener("install", (event) => {
@@ -36,3 +40,4 @@ self.addEventListener("fetch", (event) => {
       .catch(() => caches.match(event.request))
   );
 });
+
